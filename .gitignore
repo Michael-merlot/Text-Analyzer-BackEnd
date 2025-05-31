@@ -173,3 +173,13 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 /.vs
+
+# Visual Studio 2022 specific
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+*.pyproj.user
+*.sln
+
