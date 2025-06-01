@@ -1,19 +1,19 @@
-from fastapi import APIRouter, HTTPException, status
+п»їfrom fastapi import APIRouter, HTTPException, status
 from app.services import readability_calculator
 from typing import Dict, Any
-from app.database.schemas import TextRequest, ReadabilityResponse # пусть будет так, если что измените на нужное, другого пока не знаю
+from app.database.schemas import TextRequest, ReadabilityResponse # РїСѓСЃС‚СЊ Р±СѓРґРµС‚ С‚Р°Рє, РµСЃР»Рё С‡С‚Рѕ РёР·РјРµРЅРёС‚Рµ РЅР° РЅСѓР¶РЅРѕРµ, РґСЂСѓРіРѕРіРѕ РїРѕРєР° РЅРµ Р·РЅР°СЋ
 
 router = APIRouter()
 
-@router.post("/", summary="Оценить читаемость текста", response_model=ReadabilityResponse)
+@router.post("/", summary="РћС†РµРЅРёС‚СЊ С‡РёС‚Р°РµРјРѕСЃС‚СЊ С‚РµРєСЃС‚Р°", response_model=ReadabilityResponse)
 async def check_readability(request: TextRequest):
     """
-    # аанализ текста и возврат оценки
+    # Р°Р°РЅР°Р»РёР· С‚РµРєСЃС‚Р° Рё РІРѕР·РІСЂР°С‚ РѕС†РµРЅРєРё
     """
     if not request.text.strip():
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Текст не может быть пустым"
+            detail="РўРµРєСЃС‚ РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РїСѓСЃС‚С‹Рј"
         )
     
     readability_score = readability_calculator.calculate_readability(request.text)
@@ -26,13 +26,13 @@ async def check_readability(request: TextRequest):
         "stats": stats
     }
 
-@router.post("/detailed", summary="Получить детальный анализ читаемости")
+@router.post("/detailed", summary="РџРѕР»СѓС‡РёС‚СЊ РґРµС‚Р°Р»СЊРЅС‹Р№ Р°РЅР°Р»РёР· С‡РёС‚Р°РµРјРѕСЃС‚Рё")
 async def detailed_readability(request: TextRequest):
 
     if not request.text.strip():
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Текст не может быть пустым"
+            detail="РўРµРєСЃС‚ РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РїСѓСЃС‚С‹Рј"
         )
     
     detailed_metrics = readability_calculator.get_detailed_metrics(request.text)

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status, File, UploadFile
+п»їfrom fastapi import APIRouter, Depends, HTTPException, status, File, UploadFile
 from sqlalchemy.orm import Session
 from app.database.database import get_db
 from app.database import operations_CRUD
@@ -9,13 +9,13 @@ import os
 
 router = APIRouter()
 
-@router.post("/", summary="Загрузить и проанализировать текстовый файл", response_model=Document)
+@router.post("/", summary="Р—Р°РіСЂСѓР·РёС‚СЊ Рё РїСЂРѕР°РЅР°Р»РёР·РёСЂРѕРІР°С‚СЊ С‚РµРєСЃС‚РѕРІС‹Р№ С„Р°Р№Р»", response_model=Document)
 async def upload_document(
     file: UploadFile = File(...),
-    db: Session = Depends(get_db) # по поводу бд
+    db: Session = Depends(get_db) # РїРѕ РїРѕРІРѕРґСѓ Р±Рґ
 ):
-    # загружает текстовый файл, анализирует его содержимое 
-    # и сохраняет результат в базе данных.
+    # Р·Р°РіСЂСѓР¶Р°РµС‚ С‚РµРєСЃС‚РѕРІС‹Р№ С„Р°Р№Р», Р°РЅР°Р»РёР·РёСЂСѓРµС‚ РµРіРѕ СЃРѕРґРµСЂР¶РёРјРѕРµ 
+    # Рё СЃРѕС…СЂР°РЅСЏРµС‚ СЂРµР·СѓР»СЊС‚Р°С‚ РІ Р±Р°Р·Рµ РґР°РЅРЅС‹С….
     
     file_upload.validate_file(file)
     text = file_upload.extract_text(file)
@@ -23,10 +23,10 @@ async def upload_document(
 
     title = os.path.splitext(file.filename)[0]
     document = operations_CRUD.create_document(
-        db=db, # тут посмотрите по поводу бд
+        db=db, # С‚СѓС‚ РїРѕСЃРјРѕС‚СЂРёС‚Рµ РїРѕ РїРѕРІРѕРґСѓ Р±Рґ
         document=DocumentCreate(
             title=title,
-            content=text[:1000],  # сохранение первых 1000 символов, можете поиграться со значениями
+            content=text[:1000],  # СЃРѕС…СЂР°РЅРµРЅРёРµ РїРµСЂРІС‹С… 1000 СЃРёРјРІРѕР»РѕРІ, РјРѕР¶РµС‚Рµ РїРѕРёРіСЂР°С‚СЊСЃСЏ СЃРѕ Р·РЅР°С‡РµРЅРёСЏРјРё
             word_count=analysis_result["word_count"],
             sentence_count=analysis_result["sentence_count"],
             readability_score=analysis_result["readability_score"],
@@ -35,23 +35,23 @@ async def upload_document(
     )
     
     result_with_id = analysis_result.copy()
-    result_with_id["id"] = document.id # добавление ID документа в результат анализа
+    result_with_id["id"] = document.id # РґРѕР±Р°РІР»РµРЅРёРµ ID РґРѕРєСѓРјРµРЅС‚Р° РІ СЂРµР·СѓР»СЊС‚Р°С‚ Р°РЅР°Р»РёР·Р°
     
     return result_with_id
 
-@router.get("/{document_id}", summary="Получить информацию о документе", response_model=Document)
+@router.get("/{document_id}", summary="РџРѕР»СѓС‡РёС‚СЊ РёРЅС„РѕСЂРјР°С†РёСЋ Рѕ РґРѕРєСѓРјРµРЅС‚Рµ", response_model=Document)
 def get_document(document_id: int, db: Session = Depends(get_db)):
 
     document = operations_CRUD.get_document(db, document_id)
     if document is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Документ не найден"
+            detail="Р”РѕРєСѓРјРµРЅС‚ РЅРµ РЅР°Р№РґРµРЅ"
         )
     
     return document
 
-@router.get("/", summary="Получить список документов", response_model=List[Document])
+@router.get("/", summary="РџРѕР»СѓС‡РёС‚СЊ СЃРїРёСЃРѕРє РґРѕРєСѓРјРµРЅС‚РѕРІ", response_model=List[Document])
 def get_documents(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
 
     documents = operations_CRUD.get_documents(db, skip=skip, limit=limit)

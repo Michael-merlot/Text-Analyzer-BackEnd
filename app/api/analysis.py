@@ -1,29 +1,29 @@
-from fastapi import APIRouter, HTTPException, status
+п»їfrom fastapi import APIRouter, HTTPException, status
 from app.services import text_analyzer
 from typing import Dict, Any, List
-from app.database.schemas import TextRequest, AnalysisResponse # пусть будет так, если что измените на нужное, , другого пока не знаю
+from app.database.schemas import TextRequest, AnalysisResponse # РїСѓСЃС‚СЊ Р±СѓРґРµС‚ С‚Р°Рє, РµСЃР»Рё С‡С‚Рѕ РёР·РјРµРЅРёС‚Рµ РЅР° РЅСѓР¶РЅРѕРµ, , РґСЂСѓРіРѕРіРѕ РїРѕРєР° РЅРµ Р·РЅР°СЋ
 
 router = APIRouter()
 
-@router.post("/", summary="Анализировать текст", response_model=AnalysisResponse)
+@router.post("/", summary="РђРЅР°Р»РёР·РёСЂРѕРІР°С‚СЊ С‚РµРєСЃС‚", response_model=AnalysisResponse)
 async def analyze_text(request: TextRequest):
 
     if not request.text.strip():
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Текст не может быть пустым"
+            detail="РўРµРєСЃС‚ РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РїСѓСЃС‚С‹Рј"
         )
     
     analysis_result = text_analyzer.analyze_text(request.text)
     return analysis_result
 
-@router.post("/check-keywords", summary="Проверить текст на ключевые слова")
+@router.post("/check-keywords", summary="РџСЂРѕРІРµСЂРёС‚СЊ С‚РµРєСЃС‚ РЅР° РєР»СЋС‡РµРІС‹Рµ СЃР»РѕРІР°")
 async def check_keywords(request: TextRequest):
 
     if not request.text.strip():
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Текст не может быть пустым"
+            detail="РўРµРєСЃС‚ РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РїСѓСЃС‚С‹Рј"
         )
     
     keywords = text_analyzer.extract_keywords(request.text)
