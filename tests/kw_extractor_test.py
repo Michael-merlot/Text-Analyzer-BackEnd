@@ -1,5 +1,5 @@
-from src.core.keyword_extractor import KeywordExtractor
-from config import logging_config
+from app.services.keyword_extractor import KeywordExtractor
+from app.core import logging_config
 
 logger = logging_config.setup_logger(__name__)
 

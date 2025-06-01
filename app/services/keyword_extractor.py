@@ -9,6 +9,10 @@ import nltk
 
 import pymorphy2
 
+from app.core import logging_config
+
+logger = logging_config.setup_logger(__name__)
+
 class TextTokenizer:
     def __init__(self):
         """
