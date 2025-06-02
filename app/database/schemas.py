@@ -2,7 +2,6 @@ from pydantic import BaseModel
 from typing import List
 from datetime import datetime
 
-
 class DocumentCreate(BaseModel):
     title: str
     content: str
@@ -13,4 +12,3 @@ class DocumentCreate(BaseModel):
 
 class Document(DocumentCreate):
     id: int
-    created_at: datetime
