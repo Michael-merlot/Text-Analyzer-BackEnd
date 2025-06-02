@@ -1,4 +1,7 @@
-def create_document(db, document):
+import sqlite3
+from app.database.schemas import DocumentCreate, Document
+
+def create_document(db: sqlite3.Connection, document: DocumentCreate):
     cursor = db.cursor()
     cursor.execute(
         """
