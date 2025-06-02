@@ -1,9 +1,10 @@
 from collections import Counter
 from typing import List, Sequence
 
+# TODO: убрать библиотеку, использовать только TF-алгоритм
 import yake
 
-from nltk.tokenize import word_tokenize
+from nltk.tokenize import word_tokenize, sent_tokenize
 from nltk.corpus import stopwords
 import nltk
 
@@ -41,6 +42,22 @@ class TextTokenizer:
         tokens: List[str] = word_tokenize(text.lower())
 
         return self._postprocess_tokens(tokens)
+
+    def tokenize_by_sentences(self, text: str) -> List[str]:
+        """
+        Токенизирует по предложениям
+        Нужен для подсчёта предложений
+        """
+
+        return sent_tokenize(text.lower())
+    
+    def tokenize_by_words(self, text: str) -> List[str]:
+        """
+        Токенизирует по словам
+        Нужен для подсчёта слов
+        """
+
+        return [word for word in word_tokenize(text) if word.isalpha()]
 
     def _postprocess_tokens(self, tokens: List[str]) -> List[str]:
         """
