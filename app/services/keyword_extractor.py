@@ -1,9 +1,7 @@
 from collections import Counter
-from typing import List, Sequence
+from typing import List
 
-import yake
-
-from nltk.tokenize import word_tokenize
+from nltk.tokenize import word_tokenize, sent_tokenize
 from nltk.corpus import stopwords
 import nltk
 
@@ -41,6 +39,22 @@ class TextTokenizer:
         tokens: List[str] = word_tokenize(text.lower())
 
         return self._postprocess_tokens(tokens)
+
+    def tokenize_by_sentences(self, text: str) -> List[str]:
+        """
+        Токенизирует по предложениям
+        Нужен для подсчёта предложений
+        """
+
+        return sent_tokenize(text.lower())
+    
+    def tokenize_by_words(self, text: str) -> List[str]:
+        """
+        Токенизирует по словам
+        Нужен для подсчёта слов
+        """
+
+        return [word for word in word_tokenize(text) if word.isalpha()]
 
     def _postprocess_tokens(self, tokens: List[str]) -> List[str]:
         """
@@ -119,7 +133,6 @@ class TextTokenizer:
 class KeywordExtractor:
     def __init__(self):
         self.tokenizer = TextTokenizer()
-        self.yake_extractor = yake.KeywordExtractor(lan="ru")
 
     def extract_keywords_tf(self, text: str, top_n: int = 5) -> List[str]:
         """
@@ -132,17 +145,3 @@ class KeywordExtractor:
         counter = Counter(tokens)
 
         return [token for token, _ in counter.most_common(top_n)]
-
-    def extract_keywords_yake(self, text: str, top_n: int = 5) -> Sequence[str]:
-        """
-        Вытаскивает ключевые слова из текста с помощью
-        библиотеки yake
-        """
-
-        self.yake_extractor.top = top_n
-        kw_tuples = self.yake_extractor.extract_keywords(text)
-
-        keywords = [word for word, _ in kw_tuples]
-
-        return keywords
-

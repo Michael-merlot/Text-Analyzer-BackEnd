@@ -1,4 +1,4 @@
-from src.core.tokenizer import TextTokenizer
+from app.services.keyword_extractor import TextTokenizer
 from config import logging_config
 
 logger = logging_config.setup_logger(__name__)
