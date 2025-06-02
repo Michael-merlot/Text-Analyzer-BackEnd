@@ -27,7 +27,6 @@ def get_document(db: sqlite3.Connection, document_id: int):
         """, (document_id,)
     )
     result = cursor.fetchone()
-    print(result)
 
     document_data = {
         "id": result[0],
