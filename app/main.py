@@ -5,9 +5,17 @@ from app.api import documents, analysis, readabilityAPI
 from app.database.database import Base, engine
 from app.core.config import settings
 
-'''
-Необходимо тут прописать код, который создает создает все таблицы в базе данных
-'''
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    try:
+        Base.metadata.create_all(bind=engine)
+        print("База данных инициализирована")
+    except Exception as e:
+        print(f"Ошибка при инициализации базы данных: {e}")
+    
+    yield
+    
+    print("Приложение завершает работу")
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -15,7 +23,6 @@ app = FastAPI(
     version="1.0.0",
     lifespan=lifespan
 )
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.ALLOW_ORIGINS,
@@ -30,8 +37,14 @@ app.include_router(readabilityAPI.router, prefix=f"{settings.API_PREFIX}/readabi
 
 @app.get("/", tags=["root"])
 async def root():
+    """Корневой эндпоинт"""
     return {
         "message": "Добро пожаловать в API Текстового Оценщика",
         "version": "1.0.0",
         "docs_url": "/docs"
     }
+
+@app.get("/health", tags=["health"])
+async def health_check():
+    """Проверка работоспособности API"""
+    return {"status": "healthy"}
