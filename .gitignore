@@ -183,3 +183,4 @@ cython_debug/
 *.pyproj.user
 *.sln
 
+**/*.python-version
