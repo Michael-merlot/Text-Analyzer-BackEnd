@@ -28,8 +28,6 @@ class TextAnalyzer:
         sentences: List[str]      = self.tokenizer.tokenize_by_sentences(text)
         chars_count: int          = len(text)
 
-        logger.debug(f"Tokenized by words:\n{self.tokenizer.tokenize_by_words(text)}")
-
         return {
             "top_keywords":    top_n_keywords,
             "words_count":     len(words),
