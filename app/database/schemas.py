@@ -9,7 +9,7 @@ class DocumentCreate(BaseModel):
     word_count: int
     sentence_count: int
     readability_score: float
-    keywords: List[str]
+    keywords: str
 
 class Document(DocumentCreate):
     id: int
