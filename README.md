@@ -71,8 +71,10 @@ pip install -r requirements.txt
 ### После запуска API будет доступно по адресу: http://localhost:8080
 - После всего проделанного рекомендую зайти на http://localhost:8080/docs, где можно увидеть все реализованные функции
 
-# Структура проекта
+# 3. Структура проекта
 ## Директория Test-Analyzer-BackEnd/
+## .github/workflows/
+        - python-ci.yml
 ## app/api
         - analysis.py
         - documents.py
