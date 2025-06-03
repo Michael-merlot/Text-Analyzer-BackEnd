@@ -72,8 +72,54 @@ pip install -r requirements.txt
 - После всего проделанного рекомендую зайти на http://localhost:8080/docs, где можно увидеть все реализованные функции
 
 # Структура проекта
-adsasadas
+## Директория Test-Analyzer-BackEnd/
+## app/api
+        - analysis.py
+        - documents.py
+        - readbilityAPI.py
+        - __init__.py
 
+
+## app/core
+        - config.py
+        - logging_config.py
+        - __init__.py
+
+## app/database
+        - database.py
+        - models.py
+        - operrations_CRUD.py
+        - schemas.py
+        - __init__.py
+
+## app/services
+        - file_upload.py
+        - keyword_extractor.py
+        - readbility_calculator.py
+        - text_analyzer.py
+        - __init__.py
+
+## app/
+        - main.py
+        - __init__.py
+
+## tests/test_data/
+        - example1.txt
+
+## tests/
+        - kw_extractor_test.py
+        - test_example.py
+        - tokenizer_test.py
+        - __init__.py
+
+## (Внешние файлы в Text-Analyzer-BackEnd)/
+        - .gitignore
+        - fix_enconding.py
+        - README.md
+        - requirements.txt
+        - run.py
+        - test_analyze.db
+        - uploader.py
 
 # 4. API-эндпоинты
 API-документация доступна по адресу /docs после запуска сервера!!!
