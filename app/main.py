@@ -4,6 +4,7 @@ from contextlib import asynccontextmanager
 from app.api import documents, analysis, readabilityAPI
 from app.database.database import Base, engine
 from app.core.config import settings
+import os
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -30,6 +31,8 @@ app.add_middleware(
     allow_methods=settings.ALLOW_METHODS,
     allow_headers=settings.ALLOW_HEADERS,
 )
+
+os.makedirs("temp", exist_ok=True)
 
 app.include_router(documents.router, prefix=f"{settings.API_PREFIX}/documents", tags=["documents"])
 app.include_router(analysis.router, prefix=f"{settings.API_PREFIX}/analysis", tags=["analysis"])

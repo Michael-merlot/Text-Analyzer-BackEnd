@@ -4,18 +4,22 @@ from app.database import models
 from app.database.schemas import DocumentCreate
 
 def create_document(db: Session, document: DocumentCreate):
-    db_document = models.Document(
-        title=document.title,
-        content=document.content,
-        word_count=document.word_count,
-        sentence_count=document.sentence_count,
-        readability_score=document.readability_score,
-        keywords=json.dumps(document.keywords)
-    )
-    db.add(db_document)
-    db.commit()
-    db.refresh(db_document)
-    return db_document
+    try:
+        db_document = models.Document(
+            title=document.title,
+            content=document.content,
+            word_count=document.word_count,
+            sentence_count=document.sentence_count,
+            readability_score=document.readability_score,
+            keywords=json.dumps(document.keywords)
+        )
+        db.add(db_document)
+        db.commit()
+        db.refresh(db_document)
+        return db_document
+    except Exception as e:
+        db.rollback()
+        raise Exception(f"Ошибка при сохранении документа: {str(e)}")
 
 def get_document(db: Session, document_id: int):
     document = db.query(models.Document).filter(models.Document.id == document_id).first()

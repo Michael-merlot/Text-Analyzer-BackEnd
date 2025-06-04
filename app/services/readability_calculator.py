@@ -2,13 +2,14 @@
 from typing import Dict, Any
 
 def calculate_readability(text: str) -> float:
-
     stats = get_text_stats(text)
- 
-    # Формула индекса Флеша для русского языка (упрощенная)
-    # 206.835 - (1.3 * средняя_длина_предложения) - (60.1 * среднее_число_слогов_на_слово)
-    readability_score = 206.835 - (1.3 * stats["avg_words_per_sentence"]) - (60.1 * stats["avg_syllables_per_word"])
-
+    russian_chars = re.findall(r'[а-яА-ЯёЁ]', text)
+    is_russian = len(russian_chars) > len(text) * 0.3
+    
+    if is_russian:
+        readability_score = 206.835 - (1.3 * stats["avg_words_per_sentence"]) - (60.1 * stats["avg_syllables_per_word"])
+    else:
+        readability_score = 206.835 - (1.015 * stats["avg_words_per_sentence"]) - (84.6 * stats["avg_syllables_per_word"])
     readability_score = max(0, min(100, readability_score))
     
     return round(readability_score, 1)
@@ -32,11 +33,17 @@ def get_text_stats(text: str) -> Dict[str, Any]:
     sentences = re.split(r'[.!?]+', text)
     sentences = [s.strip() for s in sentences if s.strip()]
     words = re.findall(r'\w+', text.lower())
-    vowels = 'аеёиоуыэюя'
+    russian_chars = re.findall(r'[а-яА-ЯёЁ]', text)
+    is_russian = len(russian_chars) > len(text) * 0.3
+    
+    if is_russian:
+        vowels = 'аеёиоуыэюя'
+    else:
+        
+        vowels = 'aeiouy'
+        
     syllables_count = sum(sum(1 for char in word if char in vowels) for word in words)
-    
     avg_words_per_sentence = len(words) / max(1, len(sentences))
-    
     avg_syllables_per_word = syllables_count / max(1, len(words))
     
     return {
@@ -55,7 +62,13 @@ def get_detailed_metrics(text: str) -> Dict[str, Any]:
     words = re.findall(r'\w+', text.lower())
     unique_words_count = len(set(words))
     
-    vowels = 'аеёиоуыэюя'
+    russian_chars = re.findall(r'[а-яА-ЯёЁ]', text)
+    is_russian = len(russian_chars) > len(text) * 0.3
+    
+    if is_russian:
+        vowels = 'аеёиоуыэюя'
+    else:
+        vowels = 'aeiouy'
     complex_words_count = sum(1 for word in words if sum(1 for char in word if char in vowels) >= 4)
     
     return {
